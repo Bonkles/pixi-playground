@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <title>Rapid Pixi Playground</title>
+    <link rel='stylesheet' href='style.css'>
+    <!-- <link rel='icon' type='image/svg' href='img/rapid_favicon.svg'> -->
+
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no'/>
+    <meta name='mobile-web-app-capable' content='yes'/>
+    <meta name='apple-mobile-web-app-status-bar-style' content='black-translucent'/>
+    <style type='text/css'>
+      html, body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        /* disable elastic page bounce upon scroll */
+        overflow: hidden;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id='playground-container'></div>
+
+    <script>
+      var container = document.getElementById('playground-container');
+      var newScript = document.createElement('script');
+      newScript.type = 'text/javascript';
+      newScript.src = 'script.js';
+
+      document.getElementsByTagName('head')[0].appendChild(newScript);
+
+    </script>
+  </body>
+</html>
