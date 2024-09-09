@@ -149,29 +149,35 @@ import { AtlasAllocator } from '@rapideditor/pixi-texture-allocator';
     const source = bgTexture.source;
     const allocTexture =    allocator.allocate(w, h, 0, source);
 
-     let bgSprite = new PIXI.Sprite(bgTexture)
-    // // Center the sprite's anchor point
-    bgSprite.anchor.set(0.5);
-    bgSprite.x = 256;
-    bgSprite.y =  256;
-    bgSprite.width = 256;
-    bgSprite.height=256;
-    app.stage.addChild(bgSprite);
+// This is the normal pixi sprite created directly from the background image that the asset loader created. 
+//      let bgSprite = new PIXI.Sprite()
+//     // // Center the sprite's anchor point
+//     bgSprite.anchor.set(0.5);
+//     bgSprite.x = 256;
+//     bgSprite.y =  256;
+//     bgSprite.width = 256;
+//     bgSprite.height=256;
+//     bgSprite.zIndex=300;
+//     bgSprite.label='originalBackground'
+// //    app.stage.addChild(bgSprite);
 
+//     bgSprite.texture = bgTexture;
 
-    let bgOtherSprite = new PIXI.Sprite(allocTexture);
+    // This is the texture-allocator based sprite which doesn't seem to show up at all. double-yew-tee-eff
+    let bgOtherSprite = new PIXI.Sprite();
     bgOtherSprite.anchor.set(0.5);
     bgOtherSprite.x = 512;
     bgOtherSprite.y =  512;
     bgOtherSprite.width = 256;
     bgOtherSprite.height = 256;
-
-    app.stage.addChild(bgOtherSprite);
-
+    bgOtherSprite.zIndex = 200;
+    bgOtherSprite.label = 'allocatedBackground'
+     app.stage.addChild(bgOtherSprite);
+    bgOtherSprite.texture = allocTexture;
     // Listen for animate update
     app.ticker.add(function(ticker)
     {
-        // Rotate mr rabbit clockwise
+        // Rotate the second image clockwise
          bgOtherSprite.rotation += 0.1 * ticker.deltaTime;
     });
 })();

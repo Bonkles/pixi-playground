@@ -7,6 +7,8 @@
   "dependencies": {
     "esbuild": "^0.23.1",
     "pixi.js": "^8.3.4",
-    "static-server": "^3.0.0"
+    "static-server": "^3.0.0",
+    "@rapideditor/pixi-dashed-line": "file:../pixi-dashed-line",
+    "@rapideditor/pixi-texture-allocator": "file:../pixi-texture-allocator"
   }
 }
