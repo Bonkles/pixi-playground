@@ -5,10 +5,11 @@
     "build": "node config/esbuild.config.js"
   },
   "dependencies": {
+    "@rapideditor/pixi-dashed-line": "file:../pixi-dashed-line",
+    "@rapideditor/pixi-texture-allocator": "file:../pixi-texture-allocator",
     "esbuild": "^0.23.1",
     "pixi.js": "^8.3.4",
-    "static-server": "^3.0.0",
-    "@rapideditor/pixi-dashed-line": "file:../pixi-dashed-line",
-    "@rapideditor/pixi-texture-allocator": "file:../pixi-texture-allocator"
+    "spectorjs": "^0.9.30",
+    "static-server": "^3.0.0"
   }
 }
