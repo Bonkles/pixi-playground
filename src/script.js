@@ -84,11 +84,44 @@ import  * as SPECTOR from 'spectorjs';
     bgOtherSprite.texture = bgAllocTexture2;
     
 
+    // const svgString = '"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"32\" width=\"32\" color=\"#fff\" viewBox=\"0 0 60 60\"><path d=\"m30.5 51.5-11-11 21-21 11 11z\" fill=\"#58A9ED\"></path><path d=\"m19.5 40.5-11-11 21-21 11 11z\" fill=\"#8CD05F\"></path><path d=\"m20 41 10.5-10.5L41 20\" fill=\"#FFF\"></path><path d=\"m20 41 10.5-10.5L41 20\" stroke=\"#444\" stroke-dasharray=\"2,1\" fill=\"none\"></path><path d=\"M23 40a3 3 0 1 1-6 0 3 3 0 0 1 6 0z\" fill=\"#444\"></path><path d=\"M22 40a2 2 0 1 1-3.999.001A2 2 0 0 1 22 40z\" fill=\"#FFF\"></path><path d=\"M43 20a3 3 0 1 1-6 0 3 3 0 0 1 6 0z\" fill=\"#444\"></path><path d=\"M42 20a2 2 0 1 1-3.999.001A2 2 0 0 1 42 20z\" fill=\"#FFF\"></path><path d=\"M33 30a3 3 0 1 1-6 0 3 3 0 0 1 6 0z\" fill=\"#444\"></path><path d=\"M32 30a2 2 0 1 1-3.999.001A2 2 0 0 1 32 30z\" fill=\"#FFF\"></path></svg>"';
+    const svgString = '"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"32\" width=\"32\" color=\"#fff\" viewBox=\"0 0 15 15\"><path d=\"M10 0v15H0V0h10zM9 1H1v13h8V1zM2.5 4h5c.5 0 .5 1 0 1h-5C2 5 2 4 2.5 4zm0 2h5c.5 0 .5 1 0 1h-5C2 7 2 6 2.5 6zm0 2h5c.5 0 .5 1 0 1h-5C2 9 2 8 2.5 8zm0 2h5c.5 0 .5 1 0 1h-5c-.5 0-.5-1 0-1zM11 13c.5.5 2.5.5 3 0 0 0-1 2-1.5 2S11 13 11 13zm0-10c0 .5 3 .5 3 0v9c0 .5-3 .5-3 0V3zm1.5-3C11 0 11 .5 11 1v1c0 .5 3 .5 3 0V1c0-.5 0-1-1.5-1z\" fill=\"#ffffff\"></path></svg>"'
+    const svgGraphics = new PIXI.Graphics().svg(svgString);
+    const svgTexture = app.renderer.generateTexture({ target: svgGraphics });
+
+    const otherSvgTexture = app.renderer.extract.texture(svgGraphics);
+    const otherSvgImage = await app.renderer.extract.image(svgGraphics);
+    const otherSvgPixels = await app.renderer.extract.pixels(svgGraphics);
+
+    // const blob = new Blob(otherSvgPixels.pixels);
+    // const bitmap = await createImageBitmap(blob);
+    otherSvgTexture.source.resource = otherSvgPixels;
+
+    const svgSprite = new PIXI.Sprite(svgTexture);
+
+    let svgAllocTexture =  allocator.allocate( otherSvgTexture.width, otherSvgTexture.height, 0,  otherSvgTexture.source);
+    svgSprite.anchor.set(0.5);
+    svgSprite.x = 50;
+    svgSprite.y = 50;
+    svgSprite.scale = 2;
+
+    app.stage.addChild(svgSprite);
+    const svgSprite2 = new PIXI.Sprite(svgAllocTexture);
+    svgSprite2.anchor.set(0.5);
+    svgSprite2.x = 100;
+    svgSprite2.y = 50;
+    svgSprite2.scale = 2;
+    
+    app.stage.addChild(svgSprite2);
+
+   
+    
+
     // // // Listen for animate update
     app.ticker.add(function(ticker)
     {
         // Rotate the second image clockwise
-        bgOtherSprite.rotation += 0.1 * ticker.deltaTime;
+        svgSprite.rotation += 0.1 * ticker.deltaTime;
     });
     // spector.stopCapture();
 })();
