@@ -27,35 +27,30 @@ import  * as SPECTOR from 'spectorjs';
         // stage: myStage,
       };
     
-    const bgTexture1 = await PIXI.Assets.load('https://ecn.t0.tiles.virtualearth.net/tiles/a02123003023112111313.jpeg?g=1&pr=odbl&n=z')
-    const bgTexture2 = await PIXI.Assets.load('https://ecn.t3.tiles.virtualearth.net/tiles/a02123003023112111312.jpeg?g=1&pr=odbl&n=z')
+    const bgAsset1 = await PIXI.Assets.load('https://ecn.t0.tiles.virtualearth.net/tiles/a02123003023112111313.jpeg?g=1&pr=odbl&n=z')
+    const bgAsset2 = await PIXI.Assets.load('https://ecn.t3.tiles.virtualearth.net/tiles/a02123003023112111312.jpeg?g=1&pr=odbl&n=z')
     // Load the animation sprite sheet
     // const explosionTextures = await Assets.load('https://pixijs.com/assets/spritesheet/mc.json');
 
     // const explosionTexture = Texture.from(`Explosion_Sequence_A 16.png`);
     // Texture Atlas loading shenanigans
 
+    function allocateBackgroundTexture(allocator, imageAsset) {   
+         w = imageAsset.source.width;
+         h = imageAsset.source.height;
+        let allocatedTexture = allocator.allocate(w, h, 0,  imageAsset.source);
+        return allocatedTexture;
+    }
 
-    //  w = bgTexture2.source.width;
-    //  h = bgTexture2.source.height;
-    // let bgAllocTexture2 = allocator.allocate(w, h, 0,  bgTexture2.source);
-
-// This is the normal pixi sprite created directly from the background image that the asset loader created. 
-//      let bgSprite = new PIXI.Sprite()
-//     // // Center the sprite's anchor point
-//     bgSprite.anchor.set(0.5);
-//     bgSprite.x = 256;
-//     bgSprite.y =  256;
-//     bgSprite.width = 256;
-//     bgSprite.height =  256;
-//     // bgSprite.zIndex=300;
-//     bgSprite.label='originalBackground'
-//    app.stage.addChild(bgSprite);
-
-//     bgSprite.texture = bgTexture1;
-
-    // This is the texture-allocator based sprite which doesn't seem to show up at all. double-yew-tee-eff
-
+    function spriteFromTexture(texture) {
+        let bgSprite = new PIXI.Sprite();
+        bgSprite.width = texture.width;
+        bgSprite.height = texture.height;
+        bgSprite.anchor.set(0.5);
+        bgSprite.texture = texture;
+        app.stage.addChild(bgSprite);
+        return bgSprite;
+    }
     var spector = new SPECTOR.Spector();
     spector.onCapture.add((capture) => {
         // Do something with capture.
@@ -63,51 +58,52 @@ import  * as SPECTOR from 'spectorjs';
         document.dispatchEvent(myEvent);
     });
 
-//    spector.displayUI();
-//    spector.spyCanvases(canvasElement)
-//    spector.startCapture(canvasElement, 1000, true);
+    spector.displayUI();
+    spector.spyCanvases(canvasElement)
+    spector.startCapture(canvasElement, 1000, true);
 
     let allocator = new AtlasAllocator(app.renderer);
-    let w = bgTexture2.source.width;
-    let h = bgTexture2.source.height;
-    let bgAllocTexture2 = allocator.allocate(w, h, 0,  bgTexture2.source);
 
-    let bgOtherSprite = new PIXI.Sprite();
-    bgOtherSprite.anchor.set(0.5);
-    bgOtherSprite.x = 512;
-    bgOtherSprite.y =  512;
-    bgOtherSprite.width = 256;
-    bgOtherSprite.height = 256;
-    bgOtherSprite.zIndex = 200;
-    bgOtherSprite.label = 'allocatedBackground'
-    app.stage.addChild(bgOtherSprite);
-    bgOtherSprite.texture = bgAllocTexture2;
+    let bgTexture1 = allocateBackgroundTexture(allocator, bgAsset1);
+    let bgTexture2 = allocateBackgroundTexture(allocator, bgAsset2);
+
+    let bgSprite1 = spriteFromTexture(bgTexture1);
+    bgSprite1.x = 256;
+    bgSprite1.y = 256;
+
+    let bgSprite2 = spriteFromTexture(bgTexture2);
+
+    bgSprite2.x = 512;
+    bgSprite2.y = 512;
+    
+    
     
 
-    // const svgString = '"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"32\" width=\"32\" color=\"#fff\" viewBox=\"0 0 60 60\"><path d=\"m30.5 51.5-11-11 21-21 11 11z\" fill=\"#58A9ED\"></path><path d=\"m19.5 40.5-11-11 21-21 11 11z\" fill=\"#8CD05F\"></path><path d=\"m20 41 10.5-10.5L41 20\" fill=\"#FFF\"></path><path d=\"m20 41 10.5-10.5L41 20\" stroke=\"#444\" stroke-dasharray=\"2,1\" fill=\"none\"></path><path d=\"M23 40a3 3 0 1 1-6 0 3 3 0 0 1 6 0z\" fill=\"#444\"></path><path d=\"M22 40a2 2 0 1 1-3.999.001A2 2 0 0 1 22 40z\" fill=\"#FFF\"></path><path d=\"M43 20a3 3 0 1 1-6 0 3 3 0 0 1 6 0z\" fill=\"#444\"></path><path d=\"M42 20a2 2 0 1 1-3.999.001A2 2 0 0 1 42 20z\" fill=\"#FFF\"></path><path d=\"M33 30a3 3 0 1 1-6 0 3 3 0 0 1 6 0z\" fill=\"#444\"></path><path d=\"M32 30a2 2 0 1 1-3.999.001A2 2 0 0 1 32 30z\" fill=\"#FFF\"></path></svg>"';
+
     const svgString = '"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"32\" width=\"32\" color=\"#fff\" viewBox=\"0 0 15 15\"><path d=\"M10 0v15H0V0h10zM9 1H1v13h8V1zM2.5 4h5c.5 0 .5 1 0 1h-5C2 5 2 4 2.5 4zm0 2h5c.5 0 .5 1 0 1h-5C2 7 2 6 2.5 6zm0 2h5c.5 0 .5 1 0 1h-5C2 9 2 8 2.5 8zm0 2h5c.5 0 .5 1 0 1h-5c-.5 0-.5-1 0-1zM11 13c.5.5 2.5.5 3 0 0 0-1 2-1.5 2S11 13 11 13zm0-10c0 .5 3 .5 3 0v9c0 .5-3 .5-3 0V3zm1.5-3C11 0 11 .5 11 1v1c0 .5 3 .5 3 0V1c0-.5 0-1-1.5-1z\" fill=\"#ffffff\"></path></svg>"'
     const svgGraphics = new PIXI.Graphics().svg(svgString);
-    const svgTexture = app.renderer.generateTexture({ target: svgGraphics });
+    // const svgTexture = app.renderer.generateTexture({ target: svgGraphics });
+    // const svgSprite = new PIXI.Sprite(svgTexture);
+    // svgSprite.anchor.set(0.5);
+    // svgSprite.x = 50;
+    // svgSprite.y = 50;
+    // svgSprite.scale = 2;
+
+    // app.stage.addChild(svgSprite);
 
     const otherSvgTexture = app.renderer.extract.texture(svgGraphics);
     const otherSvgImage = await app.renderer.extract.image(svgGraphics);
     const otherSvgPixels = await app.renderer.extract.pixels(svgGraphics);
 
+    const imageData = new ImageData(otherSvgPixels.pixels, otherSvgTexture.width, otherSvgTexture.height)
+    const bitmap = await createImageBitmap(imageData);
     // const blob = new Blob(otherSvgPixels.pixels);
     // const bitmap = await createImageBitmap(blob);
-    otherSvgTexture.source.resource = otherSvgPixels;
+    otherSvgTexture.source.resource = bitmap;
 
-    const svgSprite = new PIXI.Sprite(svgTexture);
 
     let svgAllocTexture =  allocator.allocate( otherSvgTexture.width, otherSvgTexture.height, 0,  otherSvgTexture.source);
-    svgSprite.anchor.set(0.5);
-    svgSprite.x = 50;
-    svgSprite.y = 50;
-    svgSprite.scale = 2;
-
-    app.stage.addChild(svgSprite);
-    const svgSprite2 = new PIXI.Sprite(svgAllocTexture);
-    svgSprite2.anchor.set(0.5);
+    const svgSprite2 = spriteFromTexture(svgAllocTexture);
     svgSprite2.x = 100;
     svgSprite2.y = 50;
     svgSprite2.scale = 2;
@@ -121,7 +117,7 @@ import  * as SPECTOR from 'spectorjs';
     app.ticker.add(function(ticker)
     {
         // Rotate the second image clockwise
-        svgSprite.rotation += 0.1 * ticker.deltaTime;
+        svgSprite2.rotation += 0.1 * ticker.deltaTime;
     });
     // spector.stopCapture();
 })();
