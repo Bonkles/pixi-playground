@@ -2,7 +2,8 @@
   "type": "module",
   "scripts": {
     "start": "node scripts/server.js",
-    "build": "node config/esbuild.config.js"
+    "build": "node config/esbuild.config.js",
+    "watch": "esbuild src/script.js --outfile=dist/script.js --bundle --watch --servedir=dist"
   },
   "dependencies": {
     "@rapideditor/pixi-dashed-line": "file:../pixi-dashed-line",
