@@ -4,9 +4,6 @@
 * Feel free to use this as a starting point for you own playground!
 */
 import * as PIXI from 'pixi.js';
-import { Assets, Graphics, Rectangle, ImageSource, Texture, MSAA_QUALITY } from 'pixi.js';
-import { DashLine } from '@rapideditor/pixi-dashed-line';
-import { AtlasAllocator } from '@rapideditor/pixi-texture-allocator';
 import  * as SPECTOR from 'spectorjs';
 // Create our application instance
 (async () => {
@@ -27,20 +24,6 @@ import  * as SPECTOR from 'spectorjs';
         // stage: myStage,
       };
     
-    const bgAsset1 = await PIXI.Assets.load('https://ecn.t0.tiles.virtualearth.net/tiles/a02123003023112111313.jpeg?g=1&pr=odbl&n=z')
-    const bgAsset2 = await PIXI.Assets.load('https://ecn.t3.tiles.virtualearth.net/tiles/a02123003023112111312.jpeg?g=1&pr=odbl&n=z')
-    // Load the animation sprite sheet
-    // const explosionTextures = await Assets.load('https://pixijs.com/assets/spritesheet/mc.json');
-
-    // const explosionTexture = Texture.from(`Explosion_Sequence_A 16.png`);
-    // Texture Atlas loading shenanigans
-
-    function allocateBackgroundTexture(allocator, imageAsset) {   
-         w = imageAsset.source.width;
-         h = imageAsset.source.height;
-        let allocatedTexture = allocator.allocate(w, h, 0,  imageAsset.source);
-        return allocatedTexture;
-    }
 
     function spriteFromTexture(texture) {
         let bgSprite = new PIXI.Sprite();
@@ -60,23 +43,7 @@ import  * as SPECTOR from 'spectorjs';
 
     // spector.displayUI();
     // spector.spyCanvases(canvasElement)
-    // spector.startCapture(canvasElement, 1000, true);
-
-    let allocator = new AtlasAllocator(app.renderer);
-
-    let bgTexture1 = allocateBackgroundTexture(allocator, bgAsset1);
-    let bgTexture2 = allocateBackgroundTexture(allocator, bgAsset2);
-
-    let bgSprite1 = spriteFromTexture(bgTexture1);
-    bgSprite1.x = 256;
-    bgSprite1.y = 256;
-
-    let bgSprite2 = spriteFromTexture(bgTexture2);
-
-    bgSprite2.x = 512;
-    bgSprite2.y = 512;
-    
-    
+    // spector.startCapture(canvasElement, 1000, true);    
     
     // function allocTextureFromSvgString(renderer, allocator, svgString) {
 
@@ -90,59 +57,22 @@ import  * as SPECTOR from 'spectorjs';
     svgGraphics1.scale = 1;
     const svgIconAreaString = '"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"32\" width=\"32\" color=\"#fff\" viewBox=\"0 0 20 20\"><path d=\"M6.5,6.5 L13.5,6.5 L13.5,13.5 L6.5,13.5 L6.5,6.5z\" fill=\"#00ff00\" ></path><path d=\"M5.5 3A2.5 2.5 0 0 0 3 5.5c0 .958.543 1.788 1.333 2.208v4.584A2.502 2.502 0 0 0 3 14.5 2.5 2.5 0 0 0 5.5 17c.958 0 1.788-.543 2.208-1.333h4.584c.42.79 1.25 1.333 2.208 1.333a2.5 2.5 0 0 0 2.5-2.5c0-.958-.543-1.788-1.333-2.208V7.708A2.502 2.502 0 0 0 17 5.5 2.5 2.5 0 0 0 14.5 3c-.969 0-1.804.558-2.219 1.365l-.062-.032H7.708A2.502 2.502 0 0 0 5.5 3zm0 1.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm9 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2zM7.708 6.667h4.584c.234.441.6.807 1.041 1.041v4.584c-.441.234-.807.6-1.041 1.041H7.708a2.523 2.523 0 0 0-1.041-1.041V7.708c.441-.234.807-.6 1.041-1.041zM5.5 13.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm9 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z\" fill=\"#000008\"></path></svg>"'
     const svgGraphicsAreaIcon = new PIXI.Graphics().svg(svgIconAreaString);
-        const svgIconBugString = '"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"32\" width=\"32\" color=\"#fff\" viewBox=\"0 0 15 15\"><path d="M6,3 L6,4 L8,6.406 L8,8 L12,8 L12,6.406 L14,4 L14,3 L13,3 L11,5 L9,5 L7,3 L6,3 z M7,9 L6,10 L3,10 L2,11 L3,12 L6,12 L6,13 L4,14 L3,15 L3,16 L4,16 L6,15 L8,17 L12,17 L14,15 L16,16 L17,16 L17,15 L16,14 L14,13 L14,12 L17,12 L18,11 L17,10 L14,10 L13,9 L7,9 z" fill="#ffffff"/></svg>"'
-        const svgGraphicsBugIcon = new PIXI.Graphics().svg(svgIconBugString);
+    const svgIconBugString = '"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"32\" width=\"32\" color=\"#fff\" viewBox=\"0 0 15 15\"><path d="M6,3 L6,4 L8,6.406 L8,8 L12,8 L12,6.406 L14,4 L14,3 L13,3 L11,5 L9,5 L7,3 L6,3 z M7,9 L6,10 L3,10 L2,11 L3,12 L6,12 L6,13 L4,14 L3,15 L3,16 L4,16 L6,15 L8,17 L12,17 L14,15 L16,16 L17,16 L17,15 L16,14 L14,13 L14,12 L17,12 L18,11 L17,10 L14,10 L13,9 L7,9 z" fill="#ffffff"/></svg>"'
+    const svgGraphicsBugIcon = new PIXI.Graphics().svg(svgIconBugString);
         
-        
-    const svgRect = new PIXI.Rectangle(0,0,32,32);
 
-    const otherSvgTexture = app.renderer.extract.texture({ resolution: 1, target: svgGraphics1});
-    const otherSvgPixels = await app.renderer.extract.pixels({ clearColor:'red', resolution: 1, target: svgGraphics1});
+    const areaContainer = new PIXI.Container();
 
-    otherSvgTexture.source.resource = otherSvgPixels.pixels;
+    areaContainer.x = 50;
+    areaContainer.y = 50;
+    app.stage.addChild(areaContainer);
+    areaContainer.addChild(svgGraphicsAreaIcon);
 
-
-    let svgAllocTexture =  allocator.allocate( otherSvgTexture.width, otherSvgTexture.height, 1,  otherSvgTexture.source);
-    const svgSprite2 = spriteFromTexture(svgAllocTexture);
-    svgSprite2.x = 100;
-    svgSprite2.y = 50;
-    
-    app.stage.addChild(svgSprite2);
-
-   
-    const areaSvgTexture = app.renderer.extract.texture({ resolution: 1, target: svgGraphicsAreaIcon});
-    // const otherSvgImage = await app.renderer.extract.image(svgGraphics1);
-    const areaSvgPixels = await app.renderer.extract.pixels({ resolution: 1,  clearColor:'red', target: svgGraphicsAreaIcon});
-
-    areaSvgTexture.source.resource = areaSvgPixels.pixels;
-
-
-    let svgAreaAllocTexture =  allocator.allocate( areaSvgTexture.width, areaSvgTexture.height, 1,  areaSvgTexture.source);
-    const areaSvgSprite = spriteFromTexture(svgAreaAllocTexture);
-    areaSvgSprite.x = 200;
-    areaSvgSprite.y = 50;
-    areaSvgSprite.scale = 5;
-
-    app.stage.addChild(areaSvgSprite);
-    
-    const bugSvgTexture = app.renderer.extract.texture({resolution: 1, target: svgGraphicsBugIcon});
-    const bugSvgPixels = await app.renderer.extract.pixels({ resolution: 1, target: svgGraphicsBugIcon});
-    bugSvgTexture.source.resource = bugSvgPixels.pixels;
-
-    let svgBugAllocTexture = allocator.allocate(bugSvgTexture.width, bugSvgTexture.height, 1, bugSvgTexture.source )
-    const bugSvgSprite = spriteFromTexture(svgBugAllocTexture);
-    bugSvgSprite.x = 300;
-    bugSvgSprite.y = 50;
-
-    app.stage.addChild(bugSvgSprite);
-
-    // // // // Listen for animate update
-    // app.ticker.add(function(ticker)
-    // {
-    //     // Rotate the second image clockwise
-    //     svgSprite2.rotation += 0.1 * ticker.deltaTime;
-    //     areaSvgSprite.rotation -= 0.1 * ticker.deltaTime;
-    //     bugSvgSprite.rotation -= 0.05 * ticker.deltaTime;
-    // });
+    // // // Listen for animate update
+    app.ticker.add(function(ticker)
+    {
+        // Rotate the graphics
+        areaContainer.rotation += 0.1 * ticker.deltaTime;
+    });
     // spector.stopCapture();
 })();
