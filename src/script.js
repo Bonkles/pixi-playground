@@ -34,16 +34,15 @@ import  * as SPECTOR from 'spectorjs';
         app.stage.addChild(bgSprite);
         return bgSprite;
     }
-    // var spector = new SPECTOR.Spector();
-    // spector.onCapture.add((capture) => {
-    //     // Do something with capture.
-    //     var myEvent = new CustomEvent("SpectorOnCaptureEvent", { detail: { captureString: JSON.stringify(capture) } });
-    //     document.dispatchEvent(myEvent);
-    // });
-
-    // spector.displayUI();
-    // spector.spyCanvases(canvasElement)
-    // spector.startCapture(canvasElement, 1000, true);    
+    var spector = new SPECTOR.Spector();
+    spector.onCapture.add((capture) => {
+        // Do something with capture.
+        var myEvent = new CustomEvent("SpectorOnCaptureEvent", { detail: { captureString: JSON.stringify(capture) } });
+        document.dispatchEvent(myEvent);
+    });
+    spector.displayUI();
+    spector.spyCanvases(canvasElement)
+    spector.startCapture(canvasElement, 1000, true);    
     
     // function allocTextureFromSvgString(renderer, allocator, svgString) {
 
@@ -74,5 +73,5 @@ import  * as SPECTOR from 'spectorjs';
         // Rotate the graphics
         areaContainer.rotation += 0.1 * ticker.deltaTime;
     });
-    // spector.stopCapture();
+    spector.stopCapture();
 })();
